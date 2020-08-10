@@ -1,3 +1,11 @@
+-- Bottom up dynamic CYK-parse algorithm
+-- From lectures in CYK-parsing
+
+-- Tested and verified with two examples
+--      No guarantees this will always produce the correct output
+--      The output formatting is horrible
+
+-- Creates a simple w*h matrix
 function mat(w,h)
     local matrix = {};
     for x = 1, w do
@@ -9,6 +17,7 @@ function mat(w,h)
     return matrix;
 end
 
+-- Checks if a table contains an element
 function has_element(t, e)
     for i=1, #t do
         if t[i] == e then
@@ -18,6 +27,7 @@ function has_element(t, e)
     return false;
 end
 
+-- Finds a production rule producing the specified letter
 function prod_rule(g, letter)
     local rules = {};
     for k, v in pairs(g) do
@@ -28,6 +38,7 @@ function prod_rule(g, letter)
     return rules;
 end
 
+-- Actual implementation
 function parse(w, g)
     local n = string.len(w);
     local X = mat(n, n);
@@ -53,6 +64,7 @@ function parse(w, g)
     return X;
 end
 
+-- Prints a matrix in a semi-formatted way
 function printmat(m)
     for i = 1, #m do
         local row = i .. " ";
@@ -79,12 +91,12 @@ function printmat(m)
     end
 end
 
-grammar = {
-    ["S"] = { "AT", "AB" },
-    ["T"] = { "XB" },
-    ["X"] = { "AT", "AB" },
-    ["A"] = { "a" },
-    ["B"] = { "b" },
+grammar = { -- Grammar rules to use
+    ["S"] = { "AT", "AB" },     -- S -> AT | AB
+    ["T"] = { "XB" },           -- T -> XB
+    ["X"] = { "AT", "AB" },     -- X -> AT | AB
+    ["A"] = { "a" },            -- A -> a
+    ["B"] = { "b" },            -- B -> b
 }
 
 print("Test 1:");
@@ -92,7 +104,6 @@ printmat(parse("aaabbb", grammar));
 
 print("");
 print("Test 2:");
-
 
 grammar = {
     ["S"] = { "SB", "0", "1" },
